@@ -1,4 +1,5 @@
-const ws = new WebSocket('ws://localhost:8082');
+const ip = prompt("enter IP:port");
+const ws = new WebSocket('ws://' + ip);
 
 let timestamp = Date.now();
 let elapsedTime = 0;
