@@ -1,6 +1,16 @@
 const WebSocket = require("ws");
+let portNumber = process.argv[2] ? parseInt(process.argv[2]) : 8082;
 
-const wss = new WebSocket.Server({port: 8082});
+if (!process.argv[2])
+{
+    console.log("Starting server on default port", portNumber,"\nFor custom port, enter a number (1-65535) in the launch command.");
+} 
+else 
+{
+    console.log("Starting server on port", portNumber);
+}
+
+const wss = new WebSocket.Server({port: portNumber});
 let pelaaja1;
 let pelaaja2;
 let pelaajatpos = [{x: 300, y: 700}, {x: 300, y: 100}];
