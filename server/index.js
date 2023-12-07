@@ -13,11 +13,11 @@ else
 const wss = new WebSocket.Server({port: portNumber});
 let pelaaja1;
 let pelaaja2;
-let pelaajatpos = [{x: 300, y: 700}, {x: 300, y: 100}];
-let kiekkopos = {x: 300, y: 400};
+let pelaajatpos = [{x: 100, y: 300}, {x: 1100, y: 300}];
+let kiekkopos = {x: 600, y: 300};
 let kiekkospeed = {x: 0, y: 0};
-const canvasX = 600;
-const canvasY = 800;
+const canvasX = 1200;
+const canvasY = 600;
 let giveHost = true;
 
 wss.on("connection", ws => 
@@ -78,8 +78,8 @@ function sendKiekkoPos()
     if (kiekkopos.x > canvasX - 26) kiekkopos.x = canvasX-26;
     if (kiekkopos.y < 26) kiekkopos.y = 26;
     if (kiekkopos.y > canvasY - 26) kiekkopos.y = canvasY-26;
-    if (kiekkopos.x > canvasX/2-90 && kiekkopos.x < canvasX/2+90 && kiekkopos.y < 40) resetKiekko("maalip1");
-    if (kiekkopos.x > canvasX/2-90 && kiekkopos.x < canvasX/2+90 && kiekkopos.y > canvasY-40) resetKiekko("maalip2");
+    if (kiekkopos.y > canvasY/2-90 && kiekkopos.y < canvasY/2+90 && kiekkopos.x > canvasX-40) resetKiekko("maalip1");
+    if (kiekkopos.y > canvasY/2-90 && kiekkopos.y < canvasY/2+90 && kiekkopos.x < 40) resetKiekko("maalip2");
     collisionCheck();
     wss.clients.forEach(client => client.send("kiekkopos " + kiekkopos.x + " " + kiekkopos.y));
 }
@@ -92,10 +92,12 @@ function collisionCheck()
         if (distance < 45)
         {
             let collisionAngle = Math.atan2(kiekkopos.y-pelaajatpos[i].y, kiekkopos.x-pelaajatpos[i].x);
+            let kiekkomovedX = Math.cos(collisionAngle)*5; 
+            let kiekkomovedY = Math.sin(collisionAngle)*5
+            kiekkopos.x += kiekkomovedX;
+            kiekkopos.y += kiekkomovedY;
             kiekkospeed.x = Math.cos(collisionAngle)*10;
             kiekkospeed.y = Math.sin(collisionAngle)*10;
-            kiekkopos.x += Math.cos(collisionAngle)*5, 
-            kiekkopos.y += Math.sin(collisionAngle)*5;
         }
     }
 }
@@ -103,8 +105,8 @@ function collisionCheck()
 function resetKiekko(msg)
 {
     wss.clients.forEach(client => client.send(msg));
-    kiekkopos.x = 300;
-    kiekkopos.y = 400;
+    kiekkopos.x = 600;
+    kiekkopos.y = 300;
     kiekkospeed.x = 0;
     kiekkospeed.y = 0;
 }

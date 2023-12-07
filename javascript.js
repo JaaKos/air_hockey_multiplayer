@@ -89,6 +89,14 @@ class ohjattava extends esine
         onmousemove = (e) =>
         {
             let pos = getMousePos(canvas, e);
+            if (identifier === "pelaaja1")
+            {  
+                if (pos.x > canvas.width/2 - 25) pos.x = canvas.width/2 - 25; 
+            }
+            if (identifier === "pelaaja2")
+            {
+                if (pos.x < canvas.width/2 + 25) pos.x = canvas.width/2 + 25; 
+            }
             ws.send("pos" + identifier + " " + pos.x + " " + pos.y);
         }
     }
@@ -101,14 +109,14 @@ class maali
         this.status = vastustajanMaali;
         this.xpos = xpos;
         this.ypos = ypos;
-        this.xpos2 = xpos + 180;
-        this.ypos2 = ypos + 40;
+        this.xpos2 = xpos + 40;
+        this.ypos2 = ypos + 180;
     }
     draw(ctx)
     {
         ctx.beginPath();
         ctx.fillStyle = "cyan";
-        ctx.fillRect(this.xpos, this.ypos, 180, 40);
+        ctx.fillRect(this.xpos, this.ypos, 40, 180);
     }
 }
 
@@ -141,7 +149,7 @@ function drawFrame()
     requestAnimationFrame(drawFrame);
 }
 
-let ohjaimet = [new ohjattava(300, 700, 25, "red"), new ohjattava(300, 100, 25, "green")];
-let maalit = [new maali(canvas.width/2-90, canvas.height-40, 0), new maali(canvas.width/2-90, 0, 1)]
+let ohjaimet = [new ohjattava(100, 300, 25, "red"), new ohjattava(1100, 300, 25, "green")];
+let maalit = [new maali(0, canvas.height/2-90, 0), new maali(canvas.width-40, canvas.height/2-90, 1)]
 const kiekko = new esine(canvas.width/2, canvas.height/2, 20, "black");
 drawFrame();
